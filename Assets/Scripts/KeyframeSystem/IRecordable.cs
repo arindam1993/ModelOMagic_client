@@ -7,6 +7,7 @@ namespace KeyframeSystem
     {
 
         Transform GetTransform();
+        void ApplyNode(AnimNode frame);
     }
 
 }

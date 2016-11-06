@@ -8,9 +8,9 @@ namespace KeyframeSystem
     {
 
         public List<AnimNode> Roots;
-        public float TimeOffset;
 
-        public Keyframe(GameObject sceneRoot)
+
+        public Keyframe(GameObject sceneRoot, float offset)
         {
             Roots = new List<AnimNode>();
             IRecordable[] _roots = sceneRoot.GetComponentsInChildren<IRecordable>();
@@ -19,6 +19,17 @@ namespace KeyframeSystem
                 AnimNode _animRoot = AnimNode.GenerateFromTransform(_root.GetTransform());
                 Roots.Add(_animRoot);
             }
+
+        }
+
+        public void Apply(GameObject sceneRoot)
+        {
+            IRecordable[] _roots = sceneRoot.GetComponentsInChildren<IRecordable>();
+            for ( int chI = 0; chI < _roots.Length; chI++)
+            {
+                _roots[chI].ApplyNode(Roots[chI]);
+            }
+
         }
 
         public override string ToString()
@@ -26,7 +37,7 @@ namespace KeyframeSystem
             string res = "[ \n";
             foreach(AnimNode _root in Roots)
             {
-                res += _root.ToString();
+                res += _root.ToString() +",\n";
             }
             res += "\n]";
             return res;
